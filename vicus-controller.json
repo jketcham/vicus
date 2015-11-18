@@ -1,0 +1,37 @@
+{
+   "kind": "ReplicationController",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": "vicus",
+      "labels": {
+         "app": "vicus"
+      }
+   },
+   "spec": {
+      "replicas": 2,
+      "selector": {
+         "app": "vicus"
+      },
+      "template": {
+         "metadata": {
+            "labels": {
+               "app": "vicus"
+            }
+         },
+         "spec": {
+            "containers": [
+               {
+                  "name": "vicus",
+                  "image": "project-x/vicus",
+                  "ports": [
+                     {
+                        "name": "vicus",
+                        "containerPort": 8080
+                     }
+                  ]
+               }
+            ]
+         }
+      }
+   }
+}

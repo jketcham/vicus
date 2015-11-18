@@ -1,0 +1,21 @@
+{
+   "kind": "Service",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": "vicus",
+      "labels": {
+         "app": "vicus"
+      }
+   },
+   "spec": {
+      "ports": [
+         {
+           "port": 50051,
+           "targetPort": 50051
+         }
+      ],
+      "selector": {
+         "app": "vicus"
+      }
+   }
+}

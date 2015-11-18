@@ -1,0 +1,72 @@
+package model
+
+import (
+	"time"
+
+	"github.com/jketcham/vicus/Godeps/_workspace/src/gopkg.in/mgo.v2"
+	"github.com/jketcham/vicus/Godeps/_workspace/src/gopkg.in/mgo.v2/bson"
+
+	"github.com/jketcham/vicus/shared/database"
+)
+
+var db = database.Database
+
+type User struct {
+	Id       bson.ObjectId `bson:"_id"`
+	Email    string        `bson:"email"`
+	Phone    uint64        `bson:"phone"`    // best way to define phone numbers?
+	Role     string        `bson:"role"`     // TODO: make Role model
+	Password string        `bson:"password"` // use bcrypt here
+
+	FirstName string `bson:"first_name"`
+	LastName  string `bson:"last_name"`
+	Location  string `bson:"location"`
+	Bio       string `bson:"bio"`
+
+	CreatedAt  time.Time `bson:"created_at"`
+	UpdatedAt  time.Time `bson:"updated_at"`
+	LastActive time.Time `bson:"last_active"`
+}
+
+func CreateUser(email, password, firstName, lastName string) *User {
+	return &User{
+		Id:         bson.NewObjectId(),
+		Email:      email,
+		FirstName:  firstName,
+		LastName:   lastName,
+		Password:   password,
+		CreatedAt:  time.Now(),
+		LastActive: time.Now(),
+	}
+}
+
+func (u *User) Update(email, password string) (User, error) {
+	u.Email = email
+	u.Password = password
+	err := u.save()
+	if err != nil {
+		return *u, err
+	}
+	return *u, nil
+}
+
+func (u *User) FindByEmail(email string) error {
+	return u.coll().Find(bson.M{"email": email}).One(u)
+}
+
+func (u *User) FindById(id bson.ObjectId) error {
+	return u.coll().FindId(id).One(u)
+}
+
+func (u *User) Delete() error {
+	return u.coll().RemoveId(u.Id)
+}
+
+func (u *User) save() error {
+	_, err := u.coll().UpsertId(u.Id, u)
+	return err
+}
+
+func (u *User) coll() *mgo.Collection {
+	return db.C("user")
+}

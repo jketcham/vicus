@@ -22,3 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+.DS_Store
+
+# build file
+release/vicus
+vicus
+.build

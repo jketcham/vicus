@@ -1,0 +1,46 @@
+{
+	"ImportPath": "github.com/jketcham/vicus",
+	"GoVersion": "go1.4.2",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/golang/protobuf/proto",
+			"Rev": "57346232f21afd1b0138cc10fbdd43c4d17e6c16"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "346896d57731cb5670b36c6178fc5519f3225980"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "346896d57731cb5670b36c6178fc5519f3225980"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "b846920a172af75fe52c1400ae6094307be83b8a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/http2",
+			"Rev": "b846920a172af75fe52c1400ae6094307be83b8a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/internal/timeseries",
+			"Rev": "b846920a172af75fe52c1400ae6094307be83b8a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/trace",
+			"Rev": "b846920a172af75fe52c1400ae6094307be83b8a"
+		},
+		{
+			"ImportPath": "google.golang.org/grpc",
+			"Rev": "3490323066222fe765ef7903b53a48cbc876906d"
+		},
+		{
+			"ImportPath": "gopkg.in/mgo.v2",
+			"Comment": "r2015.10.05-1-g4d04138",
+			"Rev": "4d04138ffef2791c479c0c8bbffc30b34081b8d9"
+		}
+	]
+}
