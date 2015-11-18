@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package vicus;
+
+service Vicus {
+  rpc CreateUser(CreateUserRequest) returns (UserResponse) {}
+  rpc UpdateUser(UpdateUserRequest) returns (UserResponse) {}
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+  rpc GetUser(GetUserRequest) returns (UserResponse) {}
+  rpc GetUsers(GetUsersRequest) returns (UsersResponse) {}
+}
+
+// requests
+
+message CreateUserRequest {
+  string email = 1;
+  string password = 2;
+  string firstName = 3;
+  string lastName = 4;
+}
+
+message UpdateUserRequest {
+  string userId = 1;
+  string email = 2;
+  string password = 3;
+  string firstName = 4;
+  string lastName = 5;
+  string location = 6;
+  string bio = 7;
+}
+
+message DeleteUserRequest {
+  string userId = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUsersRequest {
+  repeated string id = 1;
+}
+
+// responses
+
+message UserResponse {
+  User user = 1;
+}
+
+message UsersResponse {
+  repeated User user = 1;
+}
+
+message DeleteUserResponse {
+  string status = 1;
+}
+
+message User {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string location = 4;
+  string bio = 5;
+}

@@ -28,4 +28,5 @@ _testmain.go
 # build file
 release/vicus
 vicus
+!vicus/
 .build
