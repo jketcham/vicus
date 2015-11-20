@@ -21,6 +21,7 @@ type vicusServer struct {
 
 func (s *vicusServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.UserResponse, error) {
 	user := new(model.User)
+
 	err := user.FindById(bson.ObjectId(req.Id))
 	if err != nil {
 		log.Fatalf("Couldn't get user: %s\n", err)
@@ -42,11 +43,39 @@ func (s *vicusServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 }
 
 func (s *vicusServer) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) (*pb.UserResponse, error) {
+	user := new(model.User)
+
+	err := user.FindById(bson.ObjectId(req.UserId))
+	if err != nil {
+		log.Fatalf("Couldn't get user: %s\n", err)
+		return &pb.UserResponse{}, nil
+	}
+
+	err = user.Update(req.Email, req.Password)
+	if err != nil {
+		log.Fatalf("Couldn't update user: %s\n", err)
+		return &pb.UserResponse{}, nil
+	}
+
 	return &pb.UserResponse{}, nil
 }
 
 func (s *vicusServer) DeleteUser(ctx context.Context, req *pb.DeleteUserRequest) (*pb.DeleteUserResponse, error) {
-	return &pb.DeleteUserResponse{}, nil
+	user := new(model.User)
+
+	err := user.FindById(bson.ObjectId(req.UserId))
+	if err != nil {
+		log.Fatalf("Couldn't get user: %s\n", err)
+		return &pb.DeleteUserResponse{Status: "failure"}, nil
+	}
+
+	err = user.Delete()
+	if err != nil {
+		log.Fatalf("Couldn't delete user: %s\n", err)
+		return &pb.DeleteUserResponse{Status: "failure"}, nil
+	}
+
+	return &pb.DeleteUserResponse{Status: "success"}, nil
 }
 
 func newServer() *vicusServer {
@@ -58,11 +87,11 @@ func main() {
 	fmt.Printf("starting vicus\n")
 	var (
 		port     = flag.Int("port", 8080, "The server port")
-		mongoUrl = flag.String("mongoUrl", "localhost/vicus-dev", "URL for mongodb server")
+		mongoURL = flag.String("mongoURL", "localhost/vicus-dev", "URL for mongodb server")
 	)
 	flag.Parse()
 
-	database.Connect(*mongoUrl)
+	database.Connect(*mongoURL)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
