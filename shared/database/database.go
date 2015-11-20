@@ -6,11 +6,14 @@ import (
 	"github.com/jketcham/vicus/Godeps/_workspace/src/gopkg.in/mgo.v2"
 )
 
+// MongoDB connection variables returned mgo
 var (
-	Session  *mgo.Session
+	Session *mgo.Session
 	Database *mgo.Database
 )
 
+// Connect accepts a database url and sets the Session and Database
+// connection to the MongoDB server
 func Connect(url string) {
 	var err error
 
