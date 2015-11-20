@@ -8,11 +8,11 @@ import (
 
 	"github.com/jketcham/vicus/shared/database"
 )
-
 var db = database.Database
 
+// User is the model of users in mongodb and vicus service
 type User struct {
-	Id       bson.ObjectId `bson:"_id"`
+	ID       bson.ObjectId `bson:"_id"`
 	Email    string        `bson:"email"`
 	Phone    uint64        `bson:"phone"`    // best way to define phone numbers?
 	Role     string        `bson:"role"`     // TODO: make Role model
@@ -28,9 +28,10 @@ type User struct {
 	LastActive time.Time `bson:"last_active"`
 }
 
+// CreateUser returns a new User
 func CreateUser(email, password, firstName, lastName string) *User {
 	return &User{
-		Id:         bson.NewObjectId(),
+		ID:         bson.NewObjectId(),
 		Email:      email,
 		FirstName:  firstName,
 		LastName:   lastName,
@@ -40,6 +41,7 @@ func CreateUser(email, password, firstName, lastName string) *User {
 	}
 }
 
+// Update receives email and password strings that are used to update the User
 func (u *User) Update(email, password string) (User, error) {
 	u.Email = email
 	u.Password = password
@@ -50,20 +52,23 @@ func (u *User) Update(email, password string) (User, error) {
 	return *u, nil
 }
 
+// FindByEmail finds and assigns the User with the given email
 func (u *User) FindByEmail(email string) error {
 	return u.coll().Find(bson.M{"email": email}).One(u)
 }
 
-func (u *User) FindById(id bson.ObjectId) error {
+// FindByID finds and assigns the User with the given ObjectID
+func (u *User) FindByID(id bson.ObjectId) error {
 	return u.coll().FindId(id).One(u)
 }
 
+// Delete removes the User from the database
 func (u *User) Delete() error {
-	return u.coll().RemoveId(u.Id)
+	return u.coll().RemoveId(u.ID)
 }
 
 func (u *User) save() error {
-	_, err := u.coll().UpsertId(u.Id, u)
+	_, err := u.coll().UpsertId(u.ID, u)
 	return err
 }
 
