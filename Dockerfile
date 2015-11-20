@@ -1,9 +1,9 @@
 FROM google/golang:stable
 
-MAINTAINER Jack Ketcham <jack@jackketcham.com>
-
 RUN go get github.com/tools/godep
 RUN CGO_ENABLED=0 go install -a std
+
+MAINTAINER Jack Ketcham <jack@jackketcham.com>
 
 ENV APP_DIR $GOPATH/src/github.com/jketcham/vicus
 
